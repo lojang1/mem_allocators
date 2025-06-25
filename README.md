@@ -1,9 +1,10 @@
 # Custom Memory Allocator - malloc(), free(), calloc() and realloc()
 
 ## Implementation of Malloc and Free in C
-* mem_alloc.c 
 
 Goal: Understanding malloc() and free() in C
+
+- mem_alloc.c 
 
 The functions malloc() and free() are fundamental functions in C for dynamic memory management.
 They allow programs to request and release memory at runtime.
