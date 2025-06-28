@@ -67,3 +67,7 @@ Goal: Understanding realloc() in C
     - allocate a new block with malloc(new_size)
     - copy old data to the new block
     - free old block
+
+Key Concepts
+1. resizes an existing memory block.
+2. expands/shrinks or moves memory.
