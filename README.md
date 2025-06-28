@@ -1,6 +1,12 @@
-# Custom Memory Allocator - malloc(), free(), calloc() and realloc()
+# Custom Memory Allocators - malloc(), free(), calloc() and realloc()
 
-## Implementation of Malloc and Free in C
+## Table of Contents
+- [Implementation of Malloc and Free](#implementation-of-malloc-and-free)
+- [Implementation of Calloc](#implementation-of-calloc)
+- [Implementation of Realloc](#implementation-of-realloc)
+
+
+## Implementation of Malloc and Free
 
 Goal: Understanding malloc() and free() in C
 
@@ -26,5 +32,15 @@ Key Concepts
 5. sbrk() System Call: Used to request more memory from the OS.
 6. Alignment: Ensures all allocations are 8-byte aligned for efficiency.
 
-## Implementation of Calloc in C
-** Coming Soon
+## Implementation of Calloc
+
+Goal: Understanding calloc() in C
+
+- m_calloc.c
+
+
+## Implementation of Realloc
+
+Goal: Understanding realloc() in C
+
+- m_realloc.c
