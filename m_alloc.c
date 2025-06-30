@@ -1,6 +1,7 @@
 /* malloc and free */
 #include <stddef.h>
 #include <stdio.h>
+#include <string.h>
 #include <unistd.h>
 
 // Memory block metadata
@@ -89,7 +90,45 @@ void free_mem(void *ptr) {
   }
 }
 
+void *m_calloc(size_t num, size_t size) {
+  size_t total_size = num * size;
+  void *ptr = m_alloc(total_size);
+
+  // Zero-fill memory
+  if (ptr != NULL)
+    memset(ptr, 0, total_size);
+
+  return ptr;
+}
+
+void *m_realloc(void *ptr, size_t new_size) {
+  if (ptr == NULL)
+    return m_alloc(new_size);
+
+  if (new_size == 0) {
+    free_mem(ptr);
+    return NULL;
+  }
+
+  block_t *block = (block_t *)((char *)ptr - sizeof(block_t));
+  size_t old_size = block->size;
+
+  if (new_size <= old_size)
+    return ptr;
+
+  void *new_ptr = m_alloc(new_size);
+  if (new_ptr == NULL)
+    return NULL;
+
+  memcpy(new_ptr, ptr, old_size);
+
+  free_mem(ptr);
+
+  return new_ptr;
+}
+
 int main() {
+  printf("[*] Implementation of malloc!\n");
   int *arr = (int *)m_alloc(10 * sizeof(int));
   if (arr == NULL) {
     printf("[!] Error: Memory allocation failed!\n");
@@ -100,7 +139,35 @@ int main() {
     arr[i] = i;
     printf("%d\n", arr[i]);
   }
-
   free_mem(arr);
+
+  printf("[*] Implementation of calloc!\n");
+  int *arr1 = (int *)m_calloc(5, sizeof(int));
+  if (arr1 == NULL) {
+    printf("[!] Error: calloc failed!\n");
+    return 1;
+  }
+
+  for (int i = 0; i < 5; i++) {
+    printf("%d ", arr1[i]);
+  }
+  printf("\n");
+
+  printf("[*] Implementation of realloc!\n");
+  arr1 = (int *)m_realloc(arr1, 10 * sizeof(int));
+  if (arr1 == NULL) {
+    printf("[!] Error: realloc failed!\n");
+    return 1;
+  }
+
+  for (int i = 5; i < 10; i++) {
+    arr1[i] = i;
+  }
+
+  for (int i = 0; i < 10; i++) {
+    printf("%d ", arr1[i]);
+  }
+  printf("\n");
+
   return 0;
 }
