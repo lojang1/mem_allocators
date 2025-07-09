@@ -103,25 +103,33 @@ void *m_calloc(size_t num, size_t size) {
 
 void *m_realloc(void *ptr, size_t new_size) {
   if (ptr == NULL)
+    // Equivalent to malloc()
     return m_alloc(new_size);
 
   if (new_size == 0) {
+    // Equivalent to free()
     free_mem(ptr);
     return NULL;
   }
 
+  // Get the original block metadata
   block_t *block = (block_t *)((char *)ptr - sizeof(block_t));
   size_t old_size = block->size;
 
+  // If new size <= old size, no need to move
   if (new_size <= old_size)
     return ptr;
 
+  // Otherwise, allocate new memory and copy data
   void *new_ptr = m_alloc(new_size);
   if (new_ptr == NULL)
+    // allocation failed
     return NULL;
 
+  // Copy old data
   memcpy(new_ptr, ptr, old_size);
 
+  // Free old block
   free_mem(ptr);
 
   return new_ptr;
